@@ -39,6 +39,7 @@ footer, header, hgroup, menu, nav, section {
 /* line 31, ../scss/base/_reset.scss */
 body, html {
   height: 100%;
+  background: rgb(22, 22, 77);
 }
 
 /* line 34, ../scss/base/_reset.scss */
@@ -67,4 +68,11 @@ q:before, q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+.main-title{
+  text-align: center;
+  color: antiquewhite;
+  font-size: 40px;
+  padding: 1em;
 }
