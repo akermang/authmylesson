@@ -18,3 +18,52 @@ var uiConfig = {
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
 // The start method will wait until the DOM is loaded.
 ui.start('#firebaseui-auth-container', uiConfig);
+
+class SignUpForm{
+  constructor(){
+    this.createElement();
+  }
+
+  createElement(){
+    this.element = $(`
+    <div id="user-section">
+            <div class='new-user-container' id="new-user">
+                <input class='firstName' type="text" placeholder='First name'>
+                <input class='lastName' type="text" placeholder='Last name'>
+                <input class='type' type="text" value="teacher" placeholder='Type'>
+                <input class='email' type="email" placeholder='Email'>
+                <input class='username' type="text" placeholder='User name'>
+                <input class='password' type="text" placeholder='password'>
+                <button class='Submit' onclick= submitForm() >Submit</button>
+            </div>
+    </div>
+  `);
+  }
+}
+
+createForm = ()=>{
+  let form = new SignUpForm;
+  let container = $('.nav-container')
+  container.empty()
+  container.append(form.element)
+}
+
+const submitForm = () => {
+  let firstName = $('#new-user .firstName').val()
+  let lastName = $('#new-user .lastName').val()
+  let type = $('#new-user .type').val()
+  let email = $('#new-user .email').val()
+  let username = $('#new-user .username').val()
+  let password = $('#new-user .password').val()
+
+  createUserWithEmailAndPassword(email, password);
+  console.log(firstName, "sent")
+}
+
+const createUserWithEmailAndPassword = (email, password)=> firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // ...
+});
+

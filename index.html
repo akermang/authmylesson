@@ -4,6 +4,7 @@
   <head>
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
     <title>My Lesson Fire Auth</title>
+    <link rel="shortcut icon" type="image/png" href="favicon.ico" />
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.6.0/firebaseui.css" />
   </head>
@@ -11,9 +12,18 @@
 
     <main>
       <h1 class="main-title">Welcome to My Lesson </h1>
-      <div id="firebaseui-auth-container"></div>
+      <div class = "nav-container">
+        <button class="btn-signUp" onclick= createForm() >New User Sign Up</button>
+      </div>
+      <div id="firebaseui-auth-container">
+      </div>
+      <div id = "form"></div>
     </main>
 
+    <script
+  src="http://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
 <script>
   // Initialize Firebase

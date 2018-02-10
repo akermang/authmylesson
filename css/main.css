@@ -76,3 +76,17 @@ table {
   font-size: 40px;
   padding: 1em;
 }
+.nav-container{
+  width: 200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.new-user-container{
+  padding: 1em;
+}
+
+input{
+  margin: 0.5em;
+}
