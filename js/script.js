@@ -1,6 +1,6 @@
 // FirebaseUI config.
 var uiConfig = {
-  signInSuccessUrl: 'https://akermang.github.io/myLesson/index.html',
+  signInSuccessUrl: './home.html',
   signInOptions: [
     // Leave the lines as is for the providers you want to offer your users.
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -11,7 +11,7 @@ var uiConfig = {
     // firebase.auth.PhoneAuthProvider.PROVIDER_ID
   ],
   // Terms of service url.
-  tosUrl: '<your-tos-url>'
+  tosUrl: 'https://work-force-management.herokuapp.com/#/about'
 };
 
 // Initialize the FirebaseUI Widget using Firebase.
@@ -53,17 +53,20 @@ const submitForm = () => {
   let lastName = $('#new-user .lastName').val()
   let type = $('#new-user .type').val()
   let email = $('#new-user .email').val()
-  let username = $('#new-user .username').val()
+  let displayName = $('#new-user .username').val()
   let password = $('#new-user .password').val()
 
   createUserWithEmailAndPassword(email, password);
-  console.log(firstName, "sent")
 }
-
-const createUserWithEmailAndPassword = (email, password)=> firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+ 
+const createUserWithEmailAndPassword = (email, password)=> firebase.auth().createUserWithEmailAndPassword(email, password)
+.then((data)=>{
+  console.log("data:",data.uid, data.email)
+})
+.catch(function(error) {
   // Handle Errors here.
   var errorCode = error.code;
   var errorMessage = error.message;
-  // ...
+  console.log("errorMessage:", errorMessage)
 });
 
