@@ -35,6 +35,7 @@
             var providerData = user.providerData;
             user.getIdToken().then(function(accessToken) {
               document.getElementById('sign-in-status').textContent = 'Signed in';
+              document.getElementById('avatar').src = photoURL;
               // document.getElementById('sign-in').textContent = 'Sign out';
               document.getElementById('account-details').textContent = JSON.stringify({
                 displayName: displayName,
@@ -79,10 +80,11 @@ const updateProfile = ()=> {user.updateProfile({
     </script>
   </head>
   <body>
-    <h1>Welcome to My Awesome App</h1>
+    <h1>Welcome Into MyLesson Fire Auth App</h1>
     <div id="sign-in-status"></div>
     <div id="sign-in"></div>
     <div id="account-details"></div>
+    <img  id="avatar"  alt="avatar">
     <div>
       <form action=updateProfile()></form>
     </div>
