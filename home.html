@@ -1,92 +1,106 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Sample FirebaseUI App</title>
-    <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyD0UAslXZt1Tp-I5KtyI22eV4lez_e1kvY",
-    authDomain: "mylesson-b224e.firebaseapp.com",
-    databaseURL: "https://mylesson-b224e.firebaseio.com",
-    projectId: "mylesson-b224e",
-    storageBucket: "mylesson-b224e.appspot.com",
-    messagingSenderId: "755091838915"
-  };
-  firebase.initializeApp(config);
-</script>
-    <!-- *******************************************************************************************
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sample FirebaseUI App</title>
+  <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyD0UAslXZt1Tp-I5KtyI22eV4lez_e1kvY",
+      authDomain: "mylesson-b224e.firebaseapp.com",
+      databaseURL: "https://mylesson-b224e.firebaseio.com",
+      projectId: "mylesson-b224e",
+      storageBucket: "mylesson-b224e.appspot.com",
+      messagingSenderId: "755091838915"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <!-- *******************************************************************************************
        * TODO(DEVELOPER): Paste the initialization snippet from:
        * Firebase Console > Overview > Add Firebase to your web app. *
        ***************************************************************************************** -->
-    <script type="text/javascript">
-      initApp = function() {
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
-            console.log("user:",user.uid, user.email)
-            // User is signed in.
-            var displayName = user.displayName;
-            var email = user.email;
-            var emailVerified = user.emailVerified;
-            var photoURL = user.photoURL;
-            var uid = user.uid;
-            var phoneNumber = user.phoneNumber;
-            var providerData = user.providerData;
-            user.getIdToken().then(function(accessToken) {
-              document.getElementById('sign-in-status').textContent = 'Signed in';
-              document.getElementById('avatar').src = photoURL;
-              // document.getElementById('sign-in').textContent = 'Sign out';
-              document.getElementById('account-details').textContent = JSON.stringify({
-                displayName: displayName,
-                email: email,
-                emailVerified: emailVerified,
-                phoneNumber: phoneNumber,
-                photoURL: photoURL,
-                uid: uid,
-                accessToken: accessToken,
-                providerData: providerData
-              }, null, '  ');
-            });
-          } else {
-            // User is signed out.
-            document.getElementById('sign-in-status').textContent = 'Signed out';
-            // document.getElementById('sign-in').textContent = 'Sign in';
-            document.getElementById('account-details').textContent = 'null';
-          }
-        }, function(error) {
-          console.log(error);
-        });
-      };
-
-      window.addEventListener('load', function() {
-        initApp()
+  <script type="text/javascript">
+    initApp = function () {
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+          // User is signed in.
+          var displayName = user.displayName;
+          var email = user.email;
+          var emailVerified = user.emailVerified;
+          var photoURL = user.photoURL;
+          var uid = user.uid;
+          var phoneNumber = user.phoneNumber;
+          var providerData = user.providerData;
+          user.getIdToken().then(function (accessToken) {
+            document.getElementById('sign-in-status').textContent = 'Signed in';
+            document.getElementById('avatar').src = photoURL;
+            // document.getElementById('sign-in').textContent = 'Sign out';
+            document.getElementById('account-details').textContent = JSON.stringify({
+              displayName: displayName,
+              email: email,
+              emailVerified: emailVerified,
+              phoneNumber: phoneNumber,
+              photoURL: photoURL,
+              uid: uid,
+              accessToken: accessToken,
+              providerData: providerData
+            }, null, '  ');
+          });
+        } else {
+          // User is signed out.
+          document.getElementById('sign-in-status').textContent = 'Signed out';
+          // document.getElementById('sign-in').textContent = 'Sign in';
+          document.getElementById('account-details').textContent = 'null';
+        }
+      }, function (error) {
+        console.log(error);
       });
+    };
 
-      var user = firebase.auth().currentUser;
-
-const updateProfile = ()=> {user.updateProfile({
-    displayName: "Jane Q. User",
-    photoURL: "https://example.com/jane-q-user/profile.jpg"})
-    .then(function(user) {
-      console.log("Update successful",user)
-    // Update successful.
-    })
-    .catch(function(error) {
-      console.log( "An error happened", error.massage)
-    // An error happened.
+    window.addEventListener('load', function () {
+      initApp()
     });
-}
-    </script>
-  </head>
-  <body>
-    <h1>Welcome Into MyLesson Fire Auth App</h1>
-    <div id="sign-in-status"></div>
-    <div id="sign-in"></div>
-    <div id="account-details"></div>
-    <img  id="avatar"  alt="avatar">
-    <div>
-      <form action=updateProfile()></form>
-    </div>
-  </body>
+
+    const user = firebase.auth().currentUser;
+
+    const signOut = () => firebase.auth().signOut().then(function () {
+      console.log('Signed Out');
+      window.location = "./index.html"
+    }, function (error) {
+      console.error('Sign Out Error', error);
+    });
+
+    const updateProfile = () => {
+      user.updateProfile({
+        displayName: "Jane Q. User",
+        photoURL: "https://example.com/jane-q-user/profile.jpg"
+      })
+      .then(function (user) {
+        console.log("Update successful", user)
+        // Update successful.
+      })
+      .catch(function (error) {
+        console.log("An error happened", error.massage)
+        // An error happened.
+      });
+    }
+  </script>
+
+</head>
+
+<body>
+  <h1>Welcome Into MyLesson Fire Auth App</h1>
+  <button onclick=signOut()>Sign out</button>
+  <img id="avatar" alt="avatar">
+  <div id="sign-in-status"></div>
+  <div id="sign-in"></div>
+  <div id="account-details"></div>
+
+  <div>
+    <form action=updateProfile()></form>
+  </div>
+</body>
+
 </html>
