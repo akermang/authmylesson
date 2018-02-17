@@ -18,102 +18,20 @@
     };
     firebase.initializeApp(config);
   </script>
-  <!-- *******************************************************************************************
-       * TODO(DEVELOPER): Paste the initialization snippet from:
-       * Firebase Console > Overview > Add Firebase to your web app. *
-       ***************************************************************************************** -->
-  <script type="text/javascript">
-    initApp = function () {
-      firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-          // User is signed in.
-          const displayName = user.displayName;
-          const email = user.email;
-          const emailVerified = user.emailVerified;
-          let photoURL = user.photoURL
-          const uid = user.uid
-
-          if(!photoURL){
-            let userPhotoURLRef = firebase.database().ref().child(`/users/${uid}/photoUrl`)
-            userPhotoURLRef.once('value')
-            .then(snapshot => {
-              console.log(snapshot.val())
-              photoURL= snapshot.val()
-              document.getElementById('avatar').src = photoURL
-            })
-          }
-          
-          var phoneNumber = user.phoneNumber;
-          var providerData = user.providerData;
-          user.getIdToken().then(function (accessToken) {
-            document.getElementById('sign-in-status').textContent = `${displayName} is Signed in`;
-            document.getElementById('avatar').src = photoURL
-            // document.getElementById('sign-in').textContent = 'Sign out';
-            document.getElementById('account-details').textContent = JSON.stringify({
-              displayName: displayName,
-              email: email,
-              emailVerified: emailVerified,
-              phoneNumber: phoneNumber,
-              photoURL: photoURL,
-              uid: uid,
-              accessToken: accessToken,
-              providerData: providerData
-            }, null, '  ');
-          });
-        } else {
-          // User is signed out.
-          document.getElementById('sign-in-status').textContent = 'Signed out';
-          // document.getElementById('sign-in').textContent = 'Sign in';
-          document.getElementById('account-details').textContent = 'null';
-          document.getElementById('avatar').remove()
-        }
-      }, function (error) {
-        console.log(error);
-      });
-    };
-
-    window.addEventListener('load', function () {
-      initApp()
-    });
-
-    const user = firebase.auth().currentUser;
-
-    const signOut = () => firebase.auth().signOut().then(function () {
-      console.log('Signed Out');
-      window.location = "./index.html"
-    }, function (error) {
-      console.error('Sign Out Error', error);
-    });
-
-    const updateProfile = () => {
-      user.updateProfile({
-        displayName: "Jane Q. User",
-        photoURL: "https://example.com/jane-q-user/profile.jpg"
-      })
-      .then(function (user) {
-        console.log("Update successful", user)
-        // Update successful.
-      })
-      .catch(function (error) {
-        console.log("An error happened", error.massage)
-        // An error happened.
-      });
-    }
-  </script>
-
 </head>
 
 <body>
   <h1>Welcome Into MyLesson Fire Auth App</h1>
-  <button onclick=signOut()>Sign out</button>
+  <button class="signout" onclick=signOut()>Sign out</button>
   <div id="sign-in-status"></div>
   <img id="avatar" alt="avatar">
   <div id="sign-in"></div>
   <div id="account-details"></div>
-
   <div>
     <form action=updateProfile()></form>
   </div>
+  
+  <script src="js/firebase.utils.js"></script>
 </body>
 
 </html>
