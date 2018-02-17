@@ -1,6 +1,6 @@
 // FirebaseUI config.
 var uiConfig = {
-  signInSuccessUrl: './home.html',
+  signInSuccessUrl: "./home",
   signInOptions: [
     // Leave the lines as is for the providers you want to offer your users.
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -18,6 +18,29 @@ var uiConfig = {
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
 // The start method will wait until the DOM is loaded.
 ui.start('#firebaseui-auth-container', uiConfig);
+
+firebase.auth().onAuthStateChanged(function (user){
+  if(user){
+    console.log("LOGED IN")
+    firebase.database().ref("users").child( user.uid ).set( {
+      displayName: user.displayName,
+      lastSignInTimestamp: Date.now(),
+      type: "teacher",
+      id: user.uid 
+    })
+    .catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log("errorMessage:", errorMessage)
+    })
+  }else {
+    console.log("NOT LOGED IN")
+  }
+})
+ 
+
+
 
 class SignUpForm{
   constructor(){
@@ -42,26 +65,40 @@ class SignUpForm{
 }
 
 createForm = ()=>{
-  let form = new SignUpForm;
+  let form = new SignUpForm();
   let container = $('.nav-container')
   container.empty()
   container.append(form.element)
 }
 
 const submitForm = () => {
-  let firstName = $('#new-user .firstName').val()
-  let lastName = $('#new-user .lastName').val()
-  let type = $('#new-user .type').val()
   let email = $('#new-user .email').val()
-  let displayName = $('#new-user .username').val()
   let password = $('#new-user .password').val()
 
   createUserWithEmailAndPassword(email, password);
 }
  
+ 
 const createUserWithEmailAndPassword = (email, password)=> firebase.auth().createUserWithEmailAndPassword(email, password)
 .then((data)=>{
+  let firstName = $('#new-user .firstName').val()
+  let lastName = $('#new-user .lastName').val()
+  let type = $('#new-user .type').val()
+  let displayName = $('#new-user .username').val()
+  let userInfo= {firstName, lastName, type, displayName }
   console.log("data:",data.uid, data.email)
+  console.log("userInfo:",userInfo)
+  data.userInfo = userInfo
+  return data
+})
+.then((data) => {
+  
+  firebase.database().ref("users").child( data.uid ).set( {
+    displayName: data.userInfo.displayName,
+    lastSignInTimestamp: Date.now(),
+    type: data.userInfo.type,
+    id: data.uid 
+  })
 })
 .catch(function(error) {
   // Handle Errors here.
@@ -69,4 +106,5 @@ const createUserWithEmailAndPassword = (email, password)=> firebase.auth().creat
   var errorMessage = error.message;
   console.log("errorMessage:", errorMessage)
 });
+
 

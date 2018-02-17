@@ -27,16 +27,27 @@
       firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
           // User is signed in.
-          var displayName = user.displayName;
-          var email = user.email;
-          var emailVerified = user.emailVerified;
-          var photoURL = user.photoURL;
-          var uid = user.uid;
+          const displayName = user.displayName;
+          const email = user.email;
+          const emailVerified = user.emailVerified;
+          let photoURL = user.photoURL
+          const uid = user.uid
+
+          if(!photoURL){
+            let userPhotoURLRef = firebase.database().ref().child(`/users/${uid}/photoUrl`)
+            userPhotoURLRef.once('value')
+            .then(snapshot => {
+              console.log(snapshot.val())
+              photoURL= snapshot.val()
+              document.getElementById('avatar').src = photoURL
+            })
+          }
+          
           var phoneNumber = user.phoneNumber;
           var providerData = user.providerData;
           user.getIdToken().then(function (accessToken) {
-            document.getElementById('sign-in-status').textContent = 'Signed in';
-            document.getElementById('avatar').src = photoURL;
+            document.getElementById('sign-in-status').textContent = `${displayName} is Signed in`;
+            document.getElementById('avatar').src = photoURL
             // document.getElementById('sign-in').textContent = 'Sign out';
             document.getElementById('account-details').textContent = JSON.stringify({
               displayName: displayName,
@@ -54,6 +65,7 @@
           document.getElementById('sign-in-status').textContent = 'Signed out';
           // document.getElementById('sign-in').textContent = 'Sign in';
           document.getElementById('account-details').textContent = 'null';
+          document.getElementById('avatar').remove()
         }
       }, function (error) {
         console.log(error);
@@ -94,8 +106,8 @@
 <body>
   <h1>Welcome Into MyLesson Fire Auth App</h1>
   <button onclick=signOut()>Sign out</button>
-  <img id="avatar" alt="avatar">
   <div id="sign-in-status"></div>
+  <img id="avatar" alt="avatar">
   <div id="sign-in"></div>
   <div id="account-details"></div>
 
